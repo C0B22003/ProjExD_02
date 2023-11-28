@@ -12,6 +12,20 @@ delta = {
     pg.K_RIGHT:(+5, 0),
 }
 
+def check_bound(rct: pg.Rect) -> tuple[bool,bool]:#練習4
+    """
+    オブジェクトが画面内or画面外を判定し、真理値をタプルに返す関数
+    引数　rct：コウカトンor爆弾SurfaceのRect
+    戻り値：横方向、縦方向判断結果（画面内：True/画面外False）
+    """
+    yoko ,tate = True, True
+    if rct.left < 0 or WIDTH < rct.right:#横方向はみだし判定
+        yoko = False
+
+    if rct.top < 0 or HEIGHT < rct.bottom:#縦方向はみだし判定
+        tate = False
+    return yoko, tate
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -43,12 +57,20 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
+        if check_bound(kk_rct) != (True, True): # 練習4 はみ出てない判定
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
         screen.blit(bb_img,bb_rct) #練習1 ぶりっと
         bb_rct.move_ip(vx,vy) #練習2　爆弾の移動
+        yoko, tate = check_bound(bb_rct)
+        if not yoko:#横方向にはみ出たら
+            vx *= -1
+        if not tate:#縦方向にはみ出たら
+            vy *= -1
+        
         pg.display.update()
         tmr += 1
-        clock.tick(1000)
+        clock.tick(100)
 
 
 if __name__ == "__main__":
