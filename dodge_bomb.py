@@ -4,13 +4,13 @@ import pygame as pg
 import time
 
 WIDTH, HEIGHT = 1300, 650
-
 delta = {
     pg.K_UP:(0, -5),
     pg.K_DOWN:(0, +5),
     pg.K_LEFT:(-5, 0),
     pg.K_RIGHT:(+5, 0),
 }
+
 
 def check_bound(rct: pg.Rect) -> tuple[bool,bool]:#練習4
     """
@@ -19,12 +19,15 @@ def check_bound(rct: pg.Rect) -> tuple[bool,bool]:#練習4
     戻り値：横方向、縦方向判断結果（画面内：True/画面外False）
     """
     yoko ,tate = True, True
+
     if rct.left < 0 or WIDTH < rct.right:#横方向はみだし判定
         yoko = False
 
     if rct.top < 0 or HEIGHT < rct.bottom:#縦方向はみだし判定
         tate = False
+
     return yoko, tate
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -37,20 +40,20 @@ def main():
     aa_img = pg.transform.rotozoom(aa_img, 0, 1.0)
     cc_img = pg.transform.rotozoom(cc_img, 0, 2.0)
     #cc_img = pg.transform.resize(cc_img,(800,800),mode='constant',anti_aliasing=True)
-
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900,400#
     bb_img = pg.Surface((20,20))  #練習1　透明なsurfaceを作る
     bb_img.set_colorkey((0,0,0)) #練習1　黒をなくす
     pg.draw.circle(bb_img,(255,0,0), (10,10), 10)
     bb_rct = bb_img.get_rect() #練習1-3
-
     bb_rct.centerx = random.randint(0,WIDTH)
     bb_rct.centery = random.randint(0,HEIGHT)
     vx,vy =+5,+5
+
     """"
     演習課題1の辞書を作成する
     """
+
     kk_zis = { 
         (5,0):pg.transform.rotozoom(kk_img, 0, 1.0),
         (5,-5):pg.transform.rotozoom(kk_img, 316, 1.0),
@@ -61,7 +64,8 @@ def main():
         (0,5):pg.transform.rotozoom(kk_img, 90, 1.0),
         (5,5):pg.transform.rotozoom(kk_img, 45, 1.0)
     }
-    aa_zis = { 
+
+    aa_zis = { #　息子の辞書
         (5,0):pg.transform.rotozoom(aa_img, 0, 1.0),
         (5,-5):pg.transform.rotozoom(aa_img, 316, 1.0),
         (0,-5):pg.transform.rotozoom(aa_img, 270, 1.0),
@@ -71,6 +75,7 @@ def main():
         (0,5):pg.transform.rotozoom(aa_img, 90, 1.0),
         (5,5):pg.transform.rotozoom(aa_img, 45, 1.0)
     }
+
     #===================
     """
     演習2
@@ -83,9 +88,9 @@ def main():
     fonto =  pg.font.Font(None, 80)
     moji = fonto.render("HOLY SHIT", True, (255,255,255))
     #===================
+
     clock = pg.time.Clock()
     tmr = 0
-
 
     while True:
         for event in pg.event.get():
@@ -102,6 +107,7 @@ def main():
             time.sleep(5)
             #====================
             return
+        
         key_lst = pg.key.get_pressed() #練習3
         sum_mv = [0,0]
         for k, tpl in delta.items():
@@ -124,7 +130,7 @@ def main():
             if sum_mv[0] >= 5:
                 kk_img = pg.transform.flip(kk_img, True, False)
         
-        if(sum_mv[0] >= 5): #演習課題1
+        if(sum_mv[0] >= 5): #演習課題1（息子）
             aa_img = pg.transform.flip(aa_img, False, True)
         if sum_mv != [0, 0]:
             aa_img = aa_zis[tuple(sum_mv)]
