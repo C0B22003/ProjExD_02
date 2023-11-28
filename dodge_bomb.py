@@ -42,12 +42,30 @@ def main():
     bb_rct.centerx = random.randint(0,WIDTH)
     bb_rct.centery = random.randint(0,HEIGHT)
     vx,vy =+5,+5
+
+    kk_zis = { 
+        (5,0):pg.transform.rotozoom(kk_img, 0, 1.0),
+        (5,-5):pg.transform.rotozoom(kk_img, 316, 1.0),
+        (0,-5):pg.transform.rotozoom(kk_img, 270, 1.0),
+        (-5,-5):pg.transform.rotozoom(kk_img, 315, 1.0),
+        (-5,0):pg.transform.rotozoom(kk_img, 0, 1.0),
+        (-5,5):pg.transform.rotozoom(kk_img, 45, 1.0),
+        (0,5):pg.transform.rotozoom(kk_img, 90, 1.0),
+        (5,5):pg.transform.rotozoom(kk_img, 45, 1.0)
+    }
+
     clock = pg.time.Clock()
     tmr = 0
+
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        if kk_rct.colliderect(bb_rct):
+            print("ゲームオーバー")
+            return
         key_lst = pg.key.get_pressed() #練習3
         sum_mv = [0,0]
         for k, tpl in delta.items():
@@ -59,6 +77,14 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True): # 練習4 はみ出てない判定
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
+        if(sum_mv[0] >= 5):
+            kk_img = pg.transform.flip(kk_img, False, True)
+        if sum_mv != [0, 0]:
+            kk_img = kk_zis[tuple(sum_mv)]
+            if sum_mv[0] >= 5:
+                kk_img = pg.transform.flip(kk_img, True, False)
+        
         screen.blit(kk_img, kk_rct)
         screen.blit(bb_img,bb_rct) #練習1 ぶりっと
         bb_rct.move_ip(vx,vy) #練習2　爆弾の移動
