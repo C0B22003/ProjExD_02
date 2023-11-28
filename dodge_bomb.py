@@ -42,7 +42,9 @@ def main():
     bb_rct.centerx = random.randint(0,WIDTH)
     bb_rct.centery = random.randint(0,HEIGHT)
     vx,vy =+5,+5
-
+    """"
+    演習課題1の辞書を作成する
+    """
     kk_zis = { 
         (5,0):pg.transform.rotozoom(kk_img, 0, 1.0),
         (5,-5):pg.transform.rotozoom(kk_img, 316, 1.0),
@@ -53,7 +55,13 @@ def main():
         (0,5):pg.transform.rotozoom(kk_img, 90, 1.0),
         (5,5):pg.transform.rotozoom(kk_img, 45, 1.0)
     }
-
+    #===================
+    """
+    演習2
+    """
+    #加速度のリスト1を生成
+    accs = [a for a in range(1, 11)]
+    #====================
     clock = pg.time.Clock()
     tmr = 0
 
@@ -77,8 +85,10 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True): # 練習4 はみ出てない判定
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
-        if(sum_mv[0] >= 5):
+        """
+        演習課題１
+        """
+        if(sum_mv[0] >= 5): #演習課題1
             kk_img = pg.transform.flip(kk_img, False, True)
         if sum_mv != [0, 0]:
             kk_img = kk_zis[tuple(sum_mv)]
@@ -87,7 +97,14 @@ def main():
         
         screen.blit(kk_img, kk_rct)
         screen.blit(bb_img,bb_rct) #練習1 ぶりっと
-        bb_rct.move_ip(vx,vy) #練習2　爆弾の移動
+    #======================
+        """
+        演習2
+        """
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        bb_rct.move_ip(avx, avy)
+        #bb_rct.move_ip(vx,vy) #練習2　爆弾の移動
+    #======================
         yoko, tate = check_bound(bb_rct)
         if not yoko:#横方向にはみ出たら
             vx *= -1
