@@ -1,7 +1,7 @@
 import random
 import sys
 import pygame as pg
-
+import time
 
 WIDTH, HEIGHT = 1100, 700
 
@@ -31,7 +31,9 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
+    cc_img = pg.image.load("ex02/fig/11.jpg")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    cc_img = pg.transform.rotozoom(cc_img, 0, 1.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900,400#
     bb_img = pg.Surface((20,20))  #練習1　透明なsurfaceを作る
@@ -62,6 +64,8 @@ def main():
     #加速度のリスト1を生成
     accs = [a for a in range(1, 11)]
     #====================
+    fonto =  pg.font.Font(None, 80)
+    moji = fonto.render("HOLY SHIT", True, (255,255,255))
     clock = pg.time.Clock()
     tmr = 0
 
@@ -72,7 +76,12 @@ def main():
                 return
             
         if kk_rct.colliderect(bb_rct):
-            print("ゲームオーバー")
+            screen.blit(bg_img,[0,0])
+            screen.blit(cc_img, [0,0])
+            screen.blit(moji, [400,400]) #文字の表示の追加機能
+            pg.display.update()
+            print("勉強不足だね")
+            time.sleep(5)
             return
         key_lst = pg.key.get_pressed() #練習3
         sum_mv = [0,0]
@@ -85,6 +94,7 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True): # 練習4 はみ出てない判定
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+
         """
         演習課題１
         """
@@ -97,6 +107,7 @@ def main():
         
         screen.blit(kk_img, kk_rct)
         screen.blit(bb_img,bb_rct) #練習1 ぶりっと
+        #screen.blit(cc_img,kk_rct)
     #======================
         """
         演習2
