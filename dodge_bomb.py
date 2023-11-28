@@ -3,7 +3,7 @@ import sys
 import pygame as pg
 import time
 
-WIDTH, HEIGHT = 1100, 700
+WIDTH, HEIGHT = 1300, 650
 
 delta = {
     pg.K_UP:(0, -5),
@@ -35,7 +35,9 @@ def main():
     cc_img = pg.image.load("ex02/fig/11.jpg")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     aa_img = pg.transform.rotozoom(aa_img, 0, 1.0)
-    cc_img = pg.transform.rotozoom(cc_img, 0, 1.0)
+    cc_img = pg.transform.rotozoom(cc_img, 0, 2.0)
+    #cc_img = pg.transform.resize(cc_img,(800,800),mode='constant',anti_aliasing=True)
+
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900,400#
     bb_img = pg.Surface((20,20))  #練習1　透明なsurfaceを作る
@@ -94,7 +96,7 @@ def main():
             #オリジナル============
             screen.blit(bg_img,[0,0])
             screen.blit(cc_img, [0,0])
-            screen.blit(moji, [400,400]) #文字の表示の追加機能
+            screen.blit(moji, [20,350]) #文字の表示の追加機能
             pg.display.update()
             print("勉強不足だね")
             time.sleep(5)
