@@ -138,7 +138,7 @@ def main():
                 aa_img = pg.transform.flip(aa_img, True, False)
 
         screen.blit(kk_img, kk_rct)
-        screen.blit(bb_img,bb_rct) #練習1 ぶりっto
+        screen.blit(bb_img,bb_rct) #練習1 画像のblit
         screen.blit(aa_img,kk_rct)
     #======================
         """
