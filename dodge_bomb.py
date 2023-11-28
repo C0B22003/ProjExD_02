@@ -31,8 +31,10 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
+    aa_img = pg.image.load("ex02/fig/3.png")
     cc_img = pg.image.load("ex02/fig/11.jpg")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    aa_img = pg.transform.rotozoom(aa_img, 0, 1.0)
     cc_img = pg.transform.rotozoom(cc_img, 0, 1.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900,400#
@@ -57,6 +59,16 @@ def main():
         (0,5):pg.transform.rotozoom(kk_img, 90, 1.0),
         (5,5):pg.transform.rotozoom(kk_img, 45, 1.0)
     }
+    aa_zis = { 
+        (5,0):pg.transform.rotozoom(aa_img, 0, 1.0),
+        (5,-5):pg.transform.rotozoom(aa_img, 316, 1.0),
+        (0,-5):pg.transform.rotozoom(aa_img, 270, 1.0),
+        (-5,-5):pg.transform.rotozoom(aa_img, 315, 1.0),
+        (-5,0):pg.transform.rotozoom(aa_img, 0, 1.0),
+        (-5,5):pg.transform.rotozoom(aa_img, 45, 1.0),
+        (0,5):pg.transform.rotozoom(aa_img, 90, 1.0),
+        (5,5):pg.transform.rotozoom(aa_img, 45, 1.0)
+    }
     #===================
     """
     演習2
@@ -64,8 +76,11 @@ def main():
     #加速度のリスト1を生成
     accs = [a for a in range(1, 11)]
     #====================
+
+    #オリジナル==========
     fonto =  pg.font.Font(None, 80)
     moji = fonto.render("HOLY SHIT", True, (255,255,255))
+    #===================
     clock = pg.time.Clock()
     tmr = 0
 
@@ -76,12 +91,14 @@ def main():
                 return
             
         if kk_rct.colliderect(bb_rct):
+            #オリジナル============
             screen.blit(bg_img,[0,0])
             screen.blit(cc_img, [0,0])
             screen.blit(moji, [400,400]) #文字の表示の追加機能
             pg.display.update()
             print("勉強不足だね")
             time.sleep(5)
+            #====================
             return
         key_lst = pg.key.get_pressed() #練習3
         sum_mv = [0,0]
@@ -105,9 +122,16 @@ def main():
             if sum_mv[0] >= 5:
                 kk_img = pg.transform.flip(kk_img, True, False)
         
+        if(sum_mv[0] >= 5): #演習課題1
+            aa_img = pg.transform.flip(aa_img, False, True)
+        if sum_mv != [0, 0]:
+            aa_img = aa_zis[tuple(sum_mv)]
+            if sum_mv[0] >= 5:
+                aa_img = pg.transform.flip(aa_img, True, False)
+
         screen.blit(kk_img, kk_rct)
-        screen.blit(bb_img,bb_rct) #練習1 ぶりっと
-        #screen.blit(cc_img,kk_rct)
+        screen.blit(bb_img,bb_rct) #練習1 ぶりっto
+        screen.blit(aa_img,kk_rct)
     #======================
         """
         演習2
